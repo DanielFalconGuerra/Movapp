@@ -12,78 +12,14 @@
         android:layout_height="match_parent"
         tools:context=".views.MainActivity">
 
-        <LinearLayout
-            android:id="@+id/loadAnimation"
+        <RelativeLayout
+            android:id="@+id/body_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_70sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/loading"
-                app:lottie_repeatMode="restart" />
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/etSearchMovie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_30sdp"
-            android:hint="Buscar Pelicula"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loadAnimation" />
-
-        <TextView
-            android:id="@+id/tvTopRated"
-            style="@style/Text.App"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Top de películas"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etSearchMovie"
-            android:textSize="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTopRated"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTopRated"
-            android:padding="@dimen/_10sdp"
-            android:clipToPadding="false"/>
-
-        <TextView
-            android:id="@+id/tvNowPlaying"
-            style="@style/Text.App"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cartelera"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvTopRated"
-            android:textSize="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvNowPlaying"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNowPlaying" />
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

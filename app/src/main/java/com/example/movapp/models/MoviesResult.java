@@ -2,7 +2,7 @@ package com.example.movapp.models;
 
 import java.util.ArrayList;
 
-public class TopMoviesResult {
+public class MoviesResult {
     public boolean adult;
     public String backdrop_path;
     public ArrayList<Integer> genre_ids;

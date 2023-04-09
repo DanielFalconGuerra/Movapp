@@ -12,4 +12,11 @@
     <color name="secondary">#FFFFFFFF</color>
     <color name="text">#47525E</color>
     <color name="cards">#DDE0E3</color>
+    <color name="borders">#5AABE6</color>
+
+    <color name="primary_dark">#30006F</color>
+    <color name="secondary_dark">#7C36FF</color>
+    <color name="text_dark">#FFF</color>
+    <color name="cards_dark">#5116B7</color>
+    <color name="borders_dark">#DDE0E3</color>
 </resources>

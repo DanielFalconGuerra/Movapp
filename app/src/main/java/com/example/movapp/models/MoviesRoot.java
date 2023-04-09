@@ -2,9 +2,9 @@ package com.example.movapp.models;
 
 import java.util.ArrayList;
 
-public class TopMoviesRoot {
+public class MoviesRoot {
     public int page;
-    public ArrayList<TopMoviesResult> results;
+    public ArrayList<MoviesResult> results;
     public int total_pages;
     public int total_results;
 }
