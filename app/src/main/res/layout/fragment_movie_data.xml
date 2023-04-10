@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ivPosterMovie"
                 android:gravity="center"
                 android:textSize="@dimen/_25ssp"
-                android:text="title"
+                android:text=""
                 style="@style/Text.App"
                 />
 
@@ -49,8 +49,7 @@
                 android:gravity="center"
                 android:textSize="@dimen/_15ssp"
                 android:scrollbars = "vertical"
-
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                android:text=""
                 style="@style/Text.App"
                 android:layout_margin="@dimen/_10sdp"
                 />
@@ -80,6 +79,7 @@
                 app:backgroundTint="@null"
                 android:background="@drawable/button_design"
                 android:textColor="@color/white"
+                android:visibility="gone"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

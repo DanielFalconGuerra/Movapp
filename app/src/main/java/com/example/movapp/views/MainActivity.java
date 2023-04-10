@@ -7,21 +7,26 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.movapp.R;
 import com.example.movapp.adapters.MoviesAdapter;
 import com.example.movapp.databinding.ActivityMainBinding;
+import com.example.movapp.utility.NetworkChangeListener;
 import com.example.movapp.viewmodel.MoviesViewModel;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
+    NetworkChangeListener networkChangeListener;
     MoviesViewModel model;
     //MoviesAdapter adapter;
     @Override
@@ -33,100 +38,22 @@ public class MainActivity extends AppCompatActivity {
         }*/
         setTheme(R.style.Theme_Movapp);
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
 
         model = new ViewModelProvider(MainActivity.this).get(MoviesViewModel.class);
+        networkChangeListener = new NetworkChangeListener();
+        /*networkChangeListener.isConnected().observe(this, isConnected -> {
+            Toast.makeText(this, "observe", Toast.LENGTH_SHORT).show();
+            if(!isConnected){
+                Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
+                Log.e("networkChangeListener", "not connected");
 
-        /*binding.rvTopRated.setHasFixedSize(true);
-        LinearLayoutManager layoutManagerTop = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        binding.rvTopRated.setLayoutManager(layoutManagerTop);
-
-        binding.rvNowPlaying.setHasFixedSize(true);
-        LinearLayoutManager layoutManagerNow = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        binding.rvNowPlaying.setLayoutManager(layoutManagerNow);
-
-        AtomicInteger pageTopMovie = new AtomicInteger();
-        AtomicInteger pageNowPlaying = new AtomicInteger();
-
-        pageTopMovie.set(1);
-        pageNowPlaying.set(1);
-        model.topMoviesRootLiveData(pageTopMovie.get()).observe(this, topMovies -> {
-            binding.loadAnimation.setVisibility(View.GONE);
-            if(topMovies != null){
-                pageTopMovie.set(topMovies.page);
-                adapter = new MoviesAdapter(this, topMovies.results);
-                binding.rvTopRated.setAdapter(adapter);
-
-                if(pageTopMovie.get() == 1)
-                    binding.btnBeforeTopMovie.setEnabled(false);
-                else
-                    binding.btnBeforeTopMovie.setEnabled(true);
-
-                if(pageTopMovie.get() == topMovies.total_pages)
-                    binding.btnNextTopMovie.setEnabled(false);
-                else
-                    binding.btnNextTopMovie.setEnabled(true);
-            }
-        });
-
-        binding.btnBeforeTopMovie.setOnClickListener(view -> {
-            pageTopMovie.set(pageTopMovie.get() - 1);
-            model.topMoviesRootLiveData(pageTopMovie.get());
-        });
-
-        binding.btnNextTopMovie.setOnClickListener(view -> {
-            pageTopMovie.set(pageTopMovie.get() + 1);
-            model.topMoviesRootLiveData(pageTopMovie.get());
-        });
-
-        model.nowPlayingRootLiveData(pageNowPlaying.get()).observe(this, nowPlaying -> {
-            if(nowPlaying != null){
-                pageNowPlaying.set(nowPlaying.page);
-                adapter = new MoviesAdapter(this, nowPlaying.results);
-                binding.rvNowPlaying.setAdapter(adapter);
-
-                if(pageNowPlaying.get() == 1)
-                    binding.btnBeforeNowPlaying.setEnabled(false);
-                else
-                    binding.btnBeforeNowPlaying.setEnabled(true);
-
-                if(pageNowPlaying.get() == nowPlaying.total_pages)
-                    binding.btnNextNowPlaying.setEnabled(false);
-                else
-                    binding.btnNextNowPlaying.setEnabled(true);
-            }
-        });
-
-        binding.btnBeforeNowPlaying.setOnClickListener(view -> {
-            pageNowPlaying.set(pageNowPlaying.get() - 1);
-            model.nowPlayingRootLiveData(pageNowPlaying.get());
-        });
-
-        binding.btnNextNowPlaying.setOnClickListener(view -> {
-            pageNowPlaying.set(pageNowPlaying.get() + 1);
-            model.nowPlayingRootLiveData(pageNowPlaying.get());
-        });
-
-        binding.etSearchMovie.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                model.topMoviesRootMutableLiveData.setValue(model.fullTopMoviesRootMutableLiveData.getValue());
-                model.nowPlayingRootMutableLiveData.setValue(model.fullNowPlayingRootMutableLiveData.getValue());
-                model.searchMovie(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+            }else{
+                Toast.makeText(this, "connected", Toast.LENGTH_SHORT).show();
+                Log.e("networkChangeListener", "connected");
             }
         });*/
-
         Fragment init = new Movies();
-        //init.setArguments(bundle_init);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container, init).commit();
 
     }
@@ -139,5 +66,17 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack();
         }
 
+    }
+    @Override
+    public void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager. CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

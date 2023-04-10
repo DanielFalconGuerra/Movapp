@@ -1,14 +1,19 @@
 package com.example.movapp.views;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.movapp.R;
 import com.example.movapp.databinding.FragmentMovieDataBinding;
 import com.example.movapp.models.MovieInformation;
+import com.example.movapp.utility.NetworkChangeListener;
 import com.example.movapp.viewmodel.MoviesViewModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +35,7 @@ public class MovieData extends Fragment {
     MoviesViewModel model;
     private FragmentMovieDataBinding binding;
     static SharedPreferences sharedPreferences;
+    NetworkChangeListener networkChangeListener;
     public MovieData() {
         // Required empty public constructor
     }
@@ -48,13 +55,25 @@ public class MovieData extends Fragment {
 
         }
     }
+    @Override
+    public void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager. CONNECTIVITY_ACTION);
+        requireActivity().registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        requireActivity().unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_data, container, false);
         model = new ViewModelProvider(requireActivity()).get(MoviesViewModel.class);
+        networkChangeListener = new NetworkChangeListener();
 
         if(getActivity() != null)
             sharedPreferences = getActivity().getSharedPreferences("movies", Context.MODE_PRIVATE);
@@ -62,6 +81,14 @@ public class MovieData extends Fragment {
         if (getArguments() != null) {
             String id = getArguments().getString("id");
             if(isAdded()) {
+                networkChangeListener.connection.observe(requireActivity(), isConnected -> {
+                    if(!isConnected){
+                        //binding.btnLoadOfflineInformation.setVisibility(View.VISIBLE);
+                        loadOfflineInformation(id);
+                    }else{
+                        //binding.btnLoadOfflineInformation.setVisibility(View.INVISIBLE);
+                    }
+                });
                 model.getMovieInformation(id, requireActivity());
                 model.movieInformationLiveData(id).observe(requireActivity(), movieInformation -> {
                     if (movieInformation != null) {
@@ -77,7 +104,7 @@ public class MovieData extends Fragment {
 
                         binding.rbVoteAverage.setRating((float) movieInformation.vote_average / 2);
                     } else {
-                        loadOfflineInformation(id);
+                        binding.ivPosterMovie.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -86,7 +113,6 @@ public class MovieData extends Fragment {
             });
         }
         return binding.getRoot();
-        //return inflater.inflate(R.layout.fragment_movie_data, container, false);
     }
 
     public MovieInformation getMovieData(int id){
@@ -107,6 +133,10 @@ public class MovieData extends Fragment {
             model.movieInformationMutableLiveData.setValue(data);
         } else if (isAdded()) {
             Toast.makeText(requireActivity(), "No hay datos guardados para mostrar", Toast.LENGTH_SHORT).show();
+            binding.tvTitleMovie.setText("Sin información para mostrar");
+            binding.tvOverviewMovie.setText("");
+            binding.rbVoteAverage.setVisibility(View.INVISIBLE);
+            model.movieInformationMutableLiveData.setValue(null);
         }
     }
 
