@@ -5,5 +5,5 @@ This project was created for a technical test. This app shows a list of top movi
 The app was development using Java programming language.
 ## Screenshots
 [movies-list.jpg](https://postimg.cc/HrjX5kKV)
-[img2.jpg](https://postimg.cc/SJgcJMgB)
-[img3.jpg](https://postimg.cc/xqyvV7MT)
+[movie-search.jpg](https://postimg.cc/SJgcJMgB)
+[movie-details.jpg](https://postimg.cc/xqyvV7MT)
