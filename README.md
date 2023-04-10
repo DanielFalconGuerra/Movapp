@@ -4,4 +4,4 @@ This project was created for a technical test. This app shows a list of top movi
 ## Tools
 The app was development using Java programming language.
 ## Screenshots
-[![img1.jpg](https://i.postimg.cc/MpmDCcmb/img1.jpg)](https://postimg.cc/HrjX5kKV)
+[img1.jpg](https://postimg.cc/HrjX5kKV)
